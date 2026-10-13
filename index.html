@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tarjeta de Presentación Digital - Lic. Joaquín Emanuel Torres Suárez</title>
+    <!-- Carga de Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Carga de Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Carga de Font Awesome para iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Estilos personalizados -->
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #374151; /* Gris oscuro para el fondo general */
+        }
+        /* Contenedor principal de la tarjeta */
+        .card-container {
+            width: 100%; /* Ocupa el ancho completo por defecto */
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-color: #ffffff;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Media Query para pantallas más grandes (tablets, desktops) */
+        @media (min-width: 450px) {
+            .card-container {
+                max-width: 420px; /* Ancho máximo en pantallas grandes */
+                margin: 2rem auto; /* Centrado y con margen vertical */
+                min-height: calc(100vh - 4rem);
+                border-radius: 24px; /* Bordes redondeados */
+                overflow: hidden; /* Asegura que el contenido respete los bordes */
+            }
+        }
+
+        /* Imagen de fondo principal */
+        .main-bg {
+            background-image: url('https://i.postimg.cc/ncrm1sJf/Whats-App-Image-2026-09-24-at-2-46-03-PM.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 300px; /* Altura incrementada de 200px a 300px */
+        }
+        
+        /* Sección de contenido principal */
+        .content-section {
+            background: linear-gradient(180deg, #556B2F 0%, #ffffff 100%);
+            margin-top: -60px;
+            border-top-left-radius: 50px;
+            border-top-right-radius: 50px;
+            position: relative;
+            padding-bottom: 2rem;
+            flex-grow: 1;
+        }
+        /* Contenedor para la foto de perfil y el ícono de verificación */
+        .profile-container {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            margin-top: -105px;
+        }
+        /* Estilo de la foto de perfil */
+        .profile-pic {
+            width: 100%;
+            height: 100%;
+            border: 5px solid #8db600; /* Verde manzana */
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            background-color: #ffffff;
+        }
+        /* Ícono de verificación */
+        .verification-badge {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background-color: #ef4444; /* Rojo de Tailwind */
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 9999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 3px solid white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+        }
+        /* Estilo general para los botones de acción principal */
+        .action-btn {
+            background-color: #6b8e23; /* Verde oliva más claro/brillante para que destaque */
+            color: white;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            border: 1px solid rgba(255,255,255,0.2); /* Borde sutil */
+        }
+        .action-btn:hover {
+            background-color: #556B2F; /* Verde aceituna oscuro al pasar el cursor */
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(85, 107, 47, 0.4);
+        }
+        /* Estilo para los botones de íconos sociales */
+        .social-btn {
+            background-color: #e9d8a6; /* Dorado claro */
+            color: #001219; /* Texto oscuro para contraste */
+            transition: all 0.3s ease;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .social-btn:hover {
+            background-color: #fefae0; /* Dorado más claro al pasar el mouse */
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+        /* Footer */
+        .footer-banner {
+            background-color: #e9d8a6;
+            color: #001219;
+        }
+
+        /* --- ESTILOS PROFESIONALES PARA POPUPS --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 37, 46, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-content {
+            background: #ffffff;
+            border-radius: 20px;
+            max-width: 90%;
+            width: 500px;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            transform: scale(0.95) translateY(20px);
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 5px solid #e9d8a6; /* Borde del popup aumentado */
+            opacity: 0;
+        }
+        .modal-overlay.active .modal-content {
+            transform: scale(1) translateY(0);
+            opacity: 1;
+        }
+        .modal-header {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid #f0f4f8;
+            position: relative;
+        }
+        .modal-header-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            text-align: center;
+            color: #005f73;
+            max-width: calc(100% - 90px); /* Evita la superposición con el botón de cerrar */
+            margin: 0 auto; /* Centra el título con el nuevo max-width */
+        }
+        /* Franja decorativa para los títulos */
+        .modal-header-title::after {
+            content: '';
+            display: block;
+            width: 50px;
+            height: 4px;
+            background-color: #ee9b00;
+            margin: 8px auto 0;
+            border-radius: 2px;
+        }
+        .modal-body {
+            padding: 1.5rem;
+            overflow-y: auto;
+            flex-grow: 1;
+        }
+        .modal-close-btn {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            background: #f0f4f8;
+            color: #005f73;
+            border-radius: 99px;
+            width: 36px;
+            height: 36px;
+            cursor: pointer;
+            border: none;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        .modal-close-btn:hover {
+            background-color: #e9d8a6;
+            transform: rotate(90deg);
+        }
+
+        /* Estilos para el Calendario */
+        .calendar-day { transition: all 0.2s ease-in-out; }
+        .calendar-day:not(.disabled):hover {
+            background-color: #e9d8a6;
+            color: #001219;
+            transform: scale(1.1);
+        }
+        .calendar-day.disabled {
+            color: #cbd5e1;
+            cursor: not-allowed;
+            background-color: transparent;
+        }
+        .calendar-day.today {
+            background-color: #ee9b00;
+            color: white;
+            font-weight: bold;
+        }
+        .calendar-day.selected {
+            background-color: #005f73;
+            color: white;
+            transform: scale(1.1);
+            box-shadow: 0 0 10px rgba(0,95,115,0.5);
+        }
+        .time-slot { transition: all 0.2s ease-in-out; border: 2px solid #f0f4f8; }
+        .time-slot:hover {
+            border-color: #e9d8a6;
+            background-color: #f0f4f8;
+        }
+        .time-slot.selected {
+            background-color: #005f73;
+            color: white;
+            border-color: #005f73;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body class="bg-gray-800">
+
+    <div class="card-container">
+        <!-- SECCIÓN DE IMAGEN SUPERIOR -->
+        <div class="main-bg"></div>
+        
+        <!-- SECCIÓN DE CONTENIDO PRINCIPAL -->
+        <div class="content-section">
+            <div class="flex flex-col items-center px-6 text-center">
+                <!-- Contenedor de Foto de Perfil y Badge -->
+                <div class="profile-container">
+                    <img src="https://i.postimg.cc/0yp7zTvC/Retrato-profesional-en-escritorio-moderno.png" alt="Foto de perfil del Lic. Joaquín Emanuel Torres Suárez" class="profile-pic object-cover rounded-full">
+                    <div class="verification-badge">
+                        <i class="fas fa-check text-sm"></i>
+                    </div>
+                </div>
+                
+                <!-- Nombre y Profesión -->
+                <h1 class="text-3xl font-bold text-white mt-4 tracking-tight">Lic. Joaquín Emanuel Torres Suárez</h1>
+                <p class="text-lg text-white opacity-80 mt-1">Higiene & Seguridad</p>
+                <p class="text-white opacity-90 mt-4 max-w-sm italic">Mi compromiso es proteger la vida y la salud laboral.</p>
+                
+                <!-- Botones Principales de Acción -->
+                <div class="flex flex-col sm:flex-row gap-4 w-full max-w-xs mx-auto mt-8">
+                    <div id="profile-btn" class="action-btn flex-1 flex items-center justify-center gap-3 font-semibold py-3 rounded-full text-lg">
+                        <i class="fas fa-user-tie"></i>
+                        <span>Reseña</span>
+                    </div>
+                    <a href="tel:+5493875378151" class="action-btn flex-1 flex items-center justify-center gap-3 font-semibold py-3 rounded-full text-lg">
+                        <i class="fas fa-phone-alt"></i>
+                        <span>Llamar</span>
+                    </a>
+                </div>
+                
+                <p class="text-gray-700 font-medium mt-8 text-center">Toca los íconos para interactuar</p>
+
+                <!-- Íconos de Contacto y Redes Sociales -->
+                <div class="grid grid-cols-4 gap-3 w-full max-w-sm mx-auto mt-4">
+                    <div id="services-btn" class="social-btn flex flex-col justify-center items-center py-3 w-full h-20 rounded-2xl">
+                        <i class="fas fa-hard-hat text-2xl"></i>
+                        <span class="text-xs mt-2 font-medium">Servicios</span>
+                    </div>
+                    <a href="https://www.linkedin.com/in/joaquin-torres-145274142?utm_source=share_via&utm_content=profile&utm_medium=member_android" target="_blank" class="social-btn flex flex-col justify-center items-center py-3 w-full h-20 rounded-2xl">
+                        <i class="fab fa-linkedin-in text-2xl"></i>
+                        <span class="text-xs mt-2 font-medium">LinkedIn</span>
+                    </a>
+                    <div id="qr-code-btn" class="social-btn flex flex-col justify-center items-center py-3 w-full h-20 rounded-2xl">
+                        <i class="fas fa-qrcode text-2xl"></i>
+                        <span class="text-xs mt-2 font-medium">Código QR</span>
+                    </div>
+                    <a href="https://www.google.com/maps/search/?api=1&query=J.A.+Fernandez+643%2C+Salta%2C+Argentina" target="_blank" class="social-btn flex flex-col justify-center items-center py-3 w-full h-20 rounded-2xl">
+                        <i class="fas fa-map-marker-alt text-2xl"></i>
+                        <span class="text-xs mt-2 font-medium">Ubicación</span>
+                    </a>
+                    <a href="https://www.facebook.com/profile.php?id=1242819663" target="_blank" class="social-btn flex flex-col justify-center items-center py-3 w-full h-20 rounded-2xl">
+                        <i class="fab fa-facebook-f text-2xl"></i>
+                        <span class="text-xs mt-2 font-medium">Facebook</span>
+                    </a>
+                    <a href="https://instagram.com/joaquinemanueltorres?rpxt=MXRubGFxamhiZmZ6Mw%3D%3D" target="_blank" class="social-btn flex flex-col justify-center items-center py-3 w-full h-20 rounded-2xl">
+                        <i class="fab fa-instagram text-2xl"></i>
+                        <span class="text-xs mt-2 font-medium">Instagram</span>
+                    </a>
+                    <a href="https://wa.me/5493875378151" target="_blank" class="social-btn flex flex-col justify-center items-center py-3 w-full h-20 rounded-2xl">
+                        <i class="fab fa-whatsapp text-2xl"></i>
+                        <span class="text-xs mt-2 font-medium">WhatsApp</span>
+                    </a>
+                    <div id="save-contact-btn" class="social-btn flex flex-col justify-center items-center py-3 w-full h-20 rounded-2xl">
+                        <i class="fas fa-save text-2xl"></i>
+                        <span class="text-xs mt-2 font-medium">Guardar Contacto</span>
+                    </div>
+                </div>
+
+                <!-- Texto para instalar -->
+                <div id="install-btn" class="text-gray-800 font-semibold mt-8 text-center cursor-pointer hover:text-[#556B2F] transition underline">
+                    ¿Cómo instalar en mi dispositivo?
+                </div>
+            </div>
+        </div>
+        
+        <!-- BANNER INFERIOR -->
+        <div class="footer-banner text-center py-4 px-4 font-semibold">
+            <p>La seguridad no es una opción, es una responsabilidad. 👷</p>
+            <a href="mailto:joaquintorressuarez@gmail.com" class="block text-sm text-[#005f73] hover:underline mt-2 font-normal">joaquintorressuarez@gmail.com</a>
+        </div>
+    </div>
+
+    <!-- POPUP / MODAL DE SERVICIOS -->
+    <div id="services-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-header-title">Mis Servicios</h2>
+                <button class="modal-close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 text-left">
+                    <!-- Servicio 1 -->
+                    <div class="flex items-start space-x-4">
+                        <img src="https://images.pexels.com/photos/1216589/pexels-photo-1216589.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Asesoramiento en Higiene y Seguridad" class="w-20 h-20 rounded-lg object-cover flex-shrink-0">
+                        <div>
+                            <h3 class="font-semibold text-gray-800">Asesoramiento Integral</h3>
+                            <p class="text-sm text-gray-500 mt-1">Asesoramiento general en Higiene y Seguridad para empresas y contratistas.</p>
+                        </div>
+                    </div>
+                    <!-- Servicio 2 -->
+                    <div class="flex items-start space-x-4">
+                        <img src="https://images.pexels.com/photos/5449646/pexels-photo-5449646.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Programas de Seguridad" class="w-20 h-20 rounded-lg object-cover flex-shrink-0">
+                        <div>
+                            <h3 class="font-semibold text-gray-800">Programas de Seguridad</h3>
+                            <p class="text-sm text-gray-500 mt-1">Elaboración y seguimiento de Programas de Seguridad adaptados a la normativa.</p>
+                        </div>
+                    </div>
+                    <!-- Servicio 3 -->
+                    <div class="flex items-start space-x-4">
+                        <img src="https://images.pexels.com/photos/6620861/pexels-photo-6620861.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Auditorías e inspecciones" class="w-20 h-20 rounded-lg object-cover flex-shrink-0">
+                        <div>
+                            <h3 class="font-semibold text-gray-800">Auditorías e Inspecciones</h3>
+                            <p class="text-sm text-gray-500 mt-1">Control constante en campo para asegurar el cumplimiento de las normas preventivas.</p>
+                        </div>
+                    </div>
+                    <!-- Servicio 4 -->
+                    <div class="flex items-start space-x-4">
+                        <img src="https://images.pexels.com/photos/6863261/pexels-photo-6863261.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Matrices de Riesgos" class="w-20 h-20 rounded-lg object-cover flex-shrink-0">
+                        <div>
+                            <h3 class="font-semibold text-gray-800">Análisis de Riesgos</h3>
+                            <p class="text-sm text-gray-500 mt-1">Identificación y evaluación mediante Matrices de Riesgos y Procedimientos de Trabajo Seguro.</p>
+                        </div>
+                    </div>
+                    <!-- Servicio 5 -->
+                    <div class="flex items-start space-x-4">
+                        <img src="https://images.pexels.com/photos/3184328/pexels-photo-3184328.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Capacitaciones al personal" class="w-20 h-20 rounded-lg object-cover flex-shrink-0">
+                        <div>
+                            <h3 class="font-semibold text-gray-800">Capacitaciones</h3>
+                            <p class="text-sm text-gray-500 mt-1">Formación y concientización al personal en prevención de riesgos laborales.</p>
+                        </div>
+                    </div>
+                    <!-- Servicio 6 -->
+                    <div class="flex items-start space-x-4">
+                        <img src="https://images.pexels.com/photos/45718/pexels-photo-45718.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Legajos Técnicos" class="w-20 h-20 rounded-lg object-cover flex-shrink-0">
+                        <div>
+                            <h3 class="font-semibold text-gray-800">Gestión Documental</h3>
+                            <p class="text-sm text-gray-500 mt-1">Confección de Legajos Técnicos y toda la gestión administrativa ante la ART.</p>
+                        </div>
+                    </div>
+                    <!-- Servicio 7 -->
+                    <div class="flex items-start space-x-4">
+                        <img src="https://images.pexels.com/photos/4549410/pexels-photo-4549410.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Investigación de accidentes" class="w-20 h-20 rounded-lg object-cover flex-shrink-0">
+                        <div>
+                            <h3 class="font-semibold text-gray-800">Investigación de Accidentes</h3>
+                            <p class="text-sm text-gray-500 mt-1">Análisis detallado de incidentes para prevenir futuras ocurrencias.</p>
+                        </div>
+                    </div>
+                    <!-- Servicio 8 -->
+                    <div class="flex items-start space-x-4">
+                        <img src="https://images.pexels.com/photos/175039/pexels-photo-175039.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Seguridad en obras y minería" class="w-20 h-20 rounded-lg object-cover flex-shrink-0">
+                        <div>
+                            <h3 class="font-semibold text-gray-800">Obras y Minería</h3>
+                            <p class="text-sm text-gray-500 mt-1">Supervisión especializada y mediciones laborales en ambientes de construcción y minería.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- POPUP / MODAL DE INSTALACIÓN -->
+    <div id="install-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-header-title">¡Lleva mi Tarjeta Contigo!</h2>
+                <button class="modal-close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                 <p class="text-center text-gray-600 mb-6">Accede a mi contacto rápidamente guardando esta tarjeta en la pantalla de inicio. ¡Es muy fácil!</p>
+                <div class="flex flex-col sm:flex-row gap-6">
+                    <div class="flex-1 p-4 bg-gray-50 rounded-lg border">
+                        <h3 class="text-lg font-semibold text-[#005f73] mb-3 flex items-center gap-2"><i class="fab fa-apple"></i> Para iOS (iPhone)</h3>
+                        <ol class="list-decimal list-inside text-gray-600 space-y-2 text-sm">
+                            <li>Toca el ícono de <strong>Compartir</strong> <i class="fas fa-share-square"></i> en Safari.</li>
+                            <li>Selecciona <strong>"Agregar a la pantalla de inicio"</strong>.</li>
+                            <li>¡Listo! El acceso directo aparecerá en tu móvil.</li>
+                        </ol>
+                    </div>
+                    <div class="flex-1 p-4 bg-gray-50 rounded-lg border">
+                        <h3 class="text-lg font-semibold text-[#005f73] mb-3 flex items-center gap-2"><i class="fab fa-android"></i> Para Android</h3>
+                        <ol class="list-decimal list-inside text-gray-600 space-y-2 text-sm">
+                            <li>Toca los <strong>tres puntos</strong> <i class="fas fa-ellipsis-v"></i> en Chrome.</li>
+                            <li>Selecciona <strong>"Agregar a la pantalla principal"</strong>.</li>
+                            <li>Confirma la acción y la tarjeta se añadirá.</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- POPUP / MODAL DE CÓDIGO QR -->
+    <div id="qr-code-modal" class="modal-overlay">
+        <div class="modal-content">
+             <div class="modal-header">
+                <h2 class="modal-header-title">Escanea para Contactar</h2>
+                <button class="modal-close-btn">&times;</button>
+            </div>
+            <div class="modal-body text-center">
+                <p class="text-gray-600 mb-4">¡Apunta la cámara de tu móvil aquí! Guarda mi contacto o comparte esta tarjeta de forma instantánea.</p>
+                <div class="flex justify-center p-2 bg-white rounded-lg border">
+                     <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=BEGIN:VCARD%0AVERSION:3.0%0AFN:Lic.%20Joaqu%C3%ADn%20Emanuel%20Torres%20Su%C3%A1rez%0ATEL;TYPE=WORK,VOICE:5493875378151%0AEMAIL:joaquintorressuarez@gmail.com%0AEND:VCARD" alt="Código QR de Contacto" class="rounded-lg">
+                </div>
+                 <p class="text-xs text-gray-400 mt-4">Este código contiene mi información de contacto (vCard).</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- POPUP / MODAL DE RESEÑA / PERFIL -->
+    <div id="profile-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-header-title">Perfil Profesional</h2>
+                <button class="modal-close-btn">&times;</button>
+            </div>
+            <div class="modal-body text-center">
+                <img src="https://i.postimg.cc/0yp7zTvC/Retrato-profesional-en-escritorio-moderno.png" alt="Lic. Joaquín Emanuel Torres Suárez" class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-[#8db600] object-cover shadow-md">
+                <h3 class="text-xl font-bold text-gray-800">Lic. Joaquín E. Torres Suárez</h3>
+                <p class="text-[#6b8e23] font-semibold mb-4">Especialista en Higiene y Seguridad</p>
+                <p class="text-gray-600 text-sm leading-relaxed text-justify mb-4">
+                    Profesional altamente capacitado con sólida experiencia en la gestión, evaluación y prevención de riesgos laborales. Mi objetivo principal es garantizar entornos de trabajo seguros y saludables, asegurando el estricto cumplimiento normativo y promoviendo una cultura de prevención que optimice la productividad y proteja el capital humano de cada empresa.
+                </p>
+                <div class="bg-gray-50 p-4 rounded-lg text-left text-sm text-gray-700 border border-gray-200">
+                    <p><strong><i class="fas fa-graduation-cap text-[#005f73] mr-2 w-5"></i> Formación:</strong> Lic. en Higiene y Seguridad.</p>
+                    <p class="mt-2"><strong><i class="fas fa-briefcase text-[#005f73] mr-2 w-5"></i> Experiencia:</strong> Obras civiles, minería e industria.</p>
+                    <p class="mt-2"><strong><i class="fas fa-certificate text-[#005f73] mr-2 w-5"></i> Matrícula:</strong> N° XXXX (Opcional)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- Lógica para el Modal de Servicios ---
+        const servicesBtn = document.getElementById('services-btn');
+        const servicesModal = document.getElementById('services-modal');
+
+        if(servicesBtn && servicesModal) {
+            const openModal = () => servicesModal.classList.add('active');
+            const closeModal = () => servicesModal.classList.remove('active');
+            servicesBtn.addEventListener('click', openModal);
+            servicesModal.querySelector('.modal-close-btn').addEventListener('click', closeModal);
+            servicesModal.addEventListener('click', (event) => { if (event.target === servicesModal) closeModal(); });
+        }
+
+        // --- Lógica para el Modal de Instalación ---
+        const installBtn = document.getElementById('install-btn');
+        const installModal = document.getElementById('install-modal');
+
+        if(installBtn && installModal) {
+            const openInstallModal = () => installModal.classList.add('active');
+            const closeInstallModal = () => installModal.classList.remove('active');
+            installBtn.addEventListener('click', openInstallModal);
+            installModal.querySelector('.modal-close-btn').addEventListener('click', closeInstallModal);
+            installModal.addEventListener('click', (event) => { if (event.target === installModal) closeInstallModal(); });
+        }
+        
+        // --- Lógica para el Modal de Código QR ---
+        const qrCodeBtn = document.getElementById('qr-code-btn');
+        const qrCodeModal = document.getElementById('qr-code-modal');
+
+        if(qrCodeBtn && qrCodeModal){
+            const openQrCodeModal = () => qrCodeModal.classList.add('active');
+            const closeQrCodeModal = () => qrCodeModal.classList.remove('active');
+            qrCodeBtn.addEventListener('click', openQrCodeModal);
+            qrCodeModal.querySelector('.modal-close-btn').addEventListener('click', closeQrCodeModal);
+            qrCodeModal.addEventListener('click', (event) => { if (event.target === qrCodeModal) closeQrCodeModal(); });
+        }
+
+        // --- Lógica para Guardar Contacto ---
+        const saveContactBtn = document.getElementById('save-contact-btn');
+        if(saveContactBtn) {
+            const saveContact = () => {
+                const vCard = "BEGIN:VCARD\n" + "VERSION:3.0\n" + "FN:Lic. Joaquín Emanuel Torres Suárez\n" + "TEL;TYPE=WORK,VOICE:+5493875378151\n" + "EMAIL:joaquintorressuarez@gmail.com\n" + "END:VCARD";
+                const blob = new Blob([vCard], { type: "text/vcard" });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = "LicJoaquinEmanuelTorresSuarez.vcf";
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            };
+            saveContactBtn.addEventListener('click', saveContact);
+        }
+
+        // --- Lógica para el Modal de RESEÑA / PERFIL ---
+        const profileBtn = document.getElementById('profile-btn');
+        const profileModal = document.getElementById('profile-modal');
+        
+        if (profileBtn && profileModal) {
+            const openProfileModal = () => profileModal.classList.add('active');
+            const closeProfileModal = () => profileModal.classList.remove('active');
+            
+            profileBtn.addEventListener('click', openProfileModal);
+            profileModal.querySelector('.modal-close-btn').addEventListener('click', closeProfileModal);
+            profileModal.addEventListener('click', (event) => {
+                if (event.target === profileModal) closeProfileModal();
+            });
+        }
+    </script>
+</body>
+</html>
